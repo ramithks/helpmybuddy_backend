@@ -7,7 +7,7 @@ yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
 
-# macOS .DS_Store files
+# macOS .DS_Store file
 .DS_Store
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
