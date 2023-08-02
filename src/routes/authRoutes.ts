@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get("/login", (req, res) => {
   if (req.user) {
-    res.json({ redirectUrl: "/profile" }); // Return JSON data with the redirect URL
+    res.json({ user: req.user }); // Return JSON data with the redirect URL
   } else {
     res.json({ message: "Please log in" }); // Return JSON data indicating the user needs to log in
   }
@@ -23,7 +23,7 @@ router.get(
 );
 
 router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
-  res.json({ redirectUrl: "/profile" }); // Return JSON data with the redirect URL after successful authentication
+  res.json({ status: "logged in successfully", data: req.user }); // Return JSON data with the redirect URL after successful authentication
 });
 
 export default router;
