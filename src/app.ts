@@ -1,8 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import { COOKIE_KEY, MONGO_URI, PORT } from "./utils/secrets";
-import authRoutes from "./routes/authRoutes";
-import profileRoutes from "./routes/profileRoutes";
+import authRoutes from "./routes/profileRoutes";
 import "./config/passport";
 import cookieSession from "cookie-session";
 import passport from "passport";
@@ -25,8 +24,8 @@ mongoose.connect(MONGO_URI, () => {
   console.log("connected to mongodb");
 });
 
-app.use("/auth", authRoutes);
-app.use("/profile", profileRoutes);
+app.use("/user", authRoutes);
+//app.use("/profile", profileRoutes);
 
 // Instead of rendering a template, we will send JSON data for the home route
 app.get("/", (req, res) => {

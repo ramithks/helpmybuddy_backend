@@ -1,17 +1,9 @@
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
+import { createUser, getUserByGoogleId } from "../controllers/user";
 const router = express.Router();
 
-// middleware to check if the user is logged in
-const checkAuth = (req: Request, res: Response, next: NextFunction) => {
-  if (!req.user) {
-    res.status(401).json({ message: "Unauthorized" }); // Return JSON data indicating the user is not logged in
-  } else {
-    next();
-  }
-};
+router.post("/create", createUser); // Add the createUser function as a POST route to create a new user
 
-router.get("/", checkAuth, (req, res) => {
-  res.json({ user: req.user }); // Return JSON data with the user details if the user is logged in
-});
+router.get("/:googleId", getUserByGoogleId); // Add the getUserByGoogleId function as a GET route to fetch a user by their googleId
 
 export default router;

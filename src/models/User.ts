@@ -16,7 +16,7 @@ export type UserDocument = Document & {
   address?: string;
   aadharCardUrl?: string;
   upiId?: string;
-  isEligible?: boolean;
+  isEligible: boolean;
 };
 
 const userSchema = new Schema<UserDocument>({
@@ -27,8 +27,8 @@ const userSchema = new Schema<UserDocument>({
   gender: String,
   phoneNumber: String,
   geoLocation: {
-    latitude: Number,
-    longitude: Number,
+    latitude: String,
+    longitude: String,
   },
   address: String,
   aadharCardUrl: String,

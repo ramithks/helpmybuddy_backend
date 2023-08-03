@@ -1,7 +1,9 @@
 import passport from "passport";
 import passportGoogle from "passport-google-oauth20";
-import User from "../models/User";
+
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from "../utils/secrets";
+import User from "../models/user";
+
 const GoogleStrategy = passportGoogle.Strategy;
 
 passport.serializeUser((user, done) => {
@@ -29,6 +31,7 @@ passport.use(
           googleId: profile.id,
           full_name: profile.displayName,
           email: profile.emails?.[0].value,
+          isEligible: false,
         });
         if (newUser) {
           done(null, newUser);
