@@ -2,27 +2,36 @@
 import { Request, Response } from "express";
 import User, { UserDocument } from "../models/user";
 
-export const createUser = async (req: Request, res: Response) => {
+const createUser = async (req: Request, res: Response) => {
   try {
-    // Extract data from the request body
-    const { full_name, email, profileImageUrl, isEligible = false } = req.body;
+    const { full_name, email, profileImageUrl } = req.body;
 
-    // Create a new user instance using the User model
+    // Check if the user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ status: "User already exists.", data: existingUser });
+    }
+
     const newUser: UserDocument = new User({
       full_name,
       email,
       profileImageUrl,
-      isEligible,
     });
 
-    // Save the new user to the database
     const savedUser = await newUser.save();
 
-    // Return the created user as a response
-    res.status(201).json(savedUser);
+    return res.status(201).json({
+      status: "New User created successfully ",
+      data: savedUser,
+    });
   } catch (error) {
-    // If there's an error, return an error response
-    res.status(500).json({ error: "Error creating user" });
+    console.error(error);
+    return res.status(500).json({
+      status: "An error occurred while creating the user.",
+      data: {},
+    });
   }
 };
 
@@ -46,3 +55,5 @@ export const getUserById = async (req: Request, res: Response) => {
     res.status(500).json({ status: "Error fetching user", data: {} });
   }
 };
+
+export default createUser;
