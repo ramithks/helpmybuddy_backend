@@ -5,32 +5,13 @@ import User, { UserDocument } from "../models/user";
 export const createUser = async (req: Request, res: Response) => {
   try {
     // Extract data from the request body
-    const {
-      googleId,
-      full_name,
-      email,
-      profileImageUrl,
-      gender,
-      phoneNumber,
-      geoLocation,
-      address,
-      aadharCardUrl,
-      upiId,
-      isEligible,
-    } = req.body;
+    const { full_name, email, profileImageUrl, isEligible = false } = req.body;
 
     // Create a new user instance using the User model
     const newUser: UserDocument = new User({
-      googleId,
       full_name,
       email,
       profileImageUrl,
-      gender,
-      phoneNumber,
-      geoLocation,
-      address,
-      aadharCardUrl,
-      upiId,
       isEligible,
     });
 
@@ -45,13 +26,13 @@ export const createUser = async (req: Request, res: Response) => {
   }
 };
 
-export const getUserByGoogleId = async (req: Request, res: Response) => {
+export const getUserById = async (req: Request, res: Response) => {
   try {
-    // Extract the googleId from the request parameters
-    const { googleId } = req.params;
+    // Extract the object Id from the request parameters
+    const { _id } = req.params;
 
-    // Find the user with the given googleId in the database
-    const user: UserDocument | null = await User.findOne({ googleId });
+    // Find the user with the given object Id in the database
+    const user: UserDocument | null = await User.findOne({ _id });
 
     if (!user) {
       // If the user is not found, return a 404 status with a message
