@@ -21,7 +21,7 @@ const userSchema = new Schema<UserDocument>({
   email: { type: String, required: true, unique: true },
   profileImageUrl: { type: String, required: true },
   gender: { type: String, enum: ["Male", "Female", "Other"], default: "Other" },
-  phoneNumber: { type: String, unique: true },
+  phoneNumber: { type: String },
   geoLocation: {
     type: {
       latitude: { type: String },
