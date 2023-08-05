@@ -1,18 +1,10 @@
 // src/controllers/userController.ts
 import { Request, Response } from "express";
-import User, { UserDocument } from "../models/user";
+import User, { UserDocument } from "../models/User";
 
 const createUser = async (req: Request, res: Response) => {
   try {
     const { full_name, email, profileImageUrl } = req.body;
-
-    // Check if the user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res
-        .status(400)
-        .json({ status: "User already exists.", data: existingUser });
-    }
 
     const newUser: UserDocument = new User({
       full_name,
