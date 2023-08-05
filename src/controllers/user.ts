@@ -12,7 +12,7 @@ const createUser = async (req: Request, res: Response) => {
     if (existingUser) {
       return res
         .status(400)
-        .json({ status: "User already exists.", data: existingUser });
+        .json({ messege: "User already exists.", data: existingUser });
     }
 
     const newUser: UserDocument = new User({
@@ -24,13 +24,13 @@ const createUser = async (req: Request, res: Response) => {
     const savedUser = await newUser.save();
 
     return res.status(201).json({
-      status: "New User created successfully ",
+      messege: "New User created successfully ",
       data: savedUser,
     });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      status: "An error occurred while creating the user.",
+      messege: "An error occurred while creating the user.",
       data: {},
     });
   }
@@ -43,14 +43,14 @@ export const getUserById = async (req: Request, res: Response) => {
 
     // If no id is provided, return with a 400 error
     if (!id) {
-      return res.status(400).json({ status: "No Id provided", data: {} });
+      return res.status(400).json({ messege: "No Id provided", data: {} });
     }
 
     // Validate id
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res
         .status(400)
-        .json({ status: "Invalid User Id provided", data: {} });
+        .json({ messege: "Invalid User Id provided", data: {} });
     }
 
     // Find the user with the given object Id in the database
@@ -58,11 +58,11 @@ export const getUserById = async (req: Request, res: Response) => {
 
     if (!user) {
       // If the user is not found, return a 404 status with a message
-      return res.status(404).json({ status: "User not found", data: {} });
+      return res.status(404).json({ messege: "User not found", data: {} });
     }
 
     // If the user is found, return it as a response
-    res.json({ status: "User Found", data: user });
+    res.json({ messege: "User Found", data: user });
   } catch (error) {
     // Log technical error for the system admin, do not expose this to the user
     console.error(error);
@@ -70,7 +70,7 @@ export const getUserById = async (req: Request, res: Response) => {
     // Send a non-technical error message to the client
     res
       .status(500)
-      .json({ status: "An internal server error occurred", data: {} });
+      .json({ messege: "An internal server error occurred", data: {} });
   }
 };
 
