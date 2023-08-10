@@ -2,35 +2,46 @@
 import { Request, Response } from "express";
 import User, { UserDocument } from "../models/User";
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
+import { SECRET_KEY } from "../utils/secrets";
 
 const createUser = async (req: Request, res: Response) => {
   try {
     const { full_name, email, profileImageUrl } = req.body;
 
     // Check if the user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res
-        .status(400)
-        .json({ messege: "User already exists.", data: existingUser });
+    let existingUser = await User.findOne({ email });
+    let isNewUser = false;
+
+    if (!existingUser) {
+      // If user doesn't exist, create a new one
+      const newUser = new User({
+        full_name,
+        email,
+        profileImageUrl,
+      });
+
+      existingUser = await newUser.save();
+      isNewUser = true;
     }
 
-    const newUser: UserDocument = new User({
-      full_name,
-      email,
-      profileImageUrl,
+    // Generate jwt for the user
+    const token = jwt.sign({ _id: existingUser._id }, SECRET_KEY, {
+      expiresIn: "1h",
     });
-
-    const savedUser = await newUser.save();
+    // replace 'SECRET_KEY' with your secret key,
 
     return res.status(201).json({
-      messege: "New User created successfully ",
-      data: savedUser,
+      message: isNewUser
+        ? "New User created successfully"
+        : "User logged in successfully",
+      data: existingUser.toObject(), // Convert to plain JavaScript object
+      token: token,
     });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      messege: "An error occurred while creating the user.",
+      message: "An error occurred while creating the user.",
       data: {},
     });
   }

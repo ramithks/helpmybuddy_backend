@@ -16,6 +16,8 @@ export const MONGO_URI = prod
   ? (process.env.MONGO_PROD as string)
   : (process.env.MONGO_LOCAL as string);
 
+export const SECRET_KEY = process.env.SECRET_KEY || "default_secret_key";
+
 if (!MONGO_URI) {
   if (prod) {
     console.error(
